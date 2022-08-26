@@ -5,10 +5,6 @@ const confirmPasswordEl = document.getElementById('confirm-password');
 
 const formEl = document.getElementById('sign-up');
 
-formEl.addEventListener('submit', (e) => {
-    e.preventDefault();
-})
-
 const isRequired = value => value === ''? false : true;
 
 const isBetween = (length, min, max) => length < min || length > max ? false : true;
@@ -75,10 +71,10 @@ const checkEmail = () => {
     const email = emailEl.value.trim();
 
     if(!isRequired(email)) {
-        showError(emailEl, "Email cannot be blank");
+        showError(emailEl, "Email cannot be blank.");
     } 
     else if(!isEmailValid(email)) {
-        showError(emailEl, `Email is not Valid`);
+        showError(emailEl, `Email is not Valid.`);
     }
     else {
         showSuccess(emailEl);
@@ -92,14 +88,86 @@ const checkPassword = () => {
     const password = passwordEl.value.trim();
 
     if(!isRequired(password)) {
-        showError(passwordEl, "Password cannot be blank");
+        showError(passwordEl, "Password cannot be blank.");
     } 
-    else if(!isEmailValid(email)) {
-        showError(emailEl, `Email is not Valid`);
+    else if(!isPasswordSecure(password)) {
+        showError(passwordEl, `Password must contain 8 characters which include 1 lowercase letter, 1 uppercase letter, 1 number and 1 special character in (!@#$%^&*).`);
     }
     else {
-        showSuccess(emailEl);
+        showSuccess(passwordEl);
         valid = true;
     }
     return valid;
 }
+
+const checkConfirmPassword = () => {
+    let valid = false;
+    const confirmPassword = confirmPasswordEl.value.trim();
+    const password  = passwordEl.value.trim();
+
+    if(!isRequired(confirmPassword)) {
+        showError(confirmPasswordEl, 'Please Enter the password Again')
+    }
+    else if(password !== confirmPassword) {
+        showError(confirmPasswordEl, 'Passwords don\'t Match')
+    } else {
+        showSuccess(confirmPasswordEl);
+        valid = true;
+    }
+    return valid;
+}
+
+const debounce = (fn, delay = 500) => {
+    let timeoutId;
+    return (...args) => {
+        //Cancel the Previous Timer
+        if(timeoutId){
+            clearTimeout(timeoutId);
+        }
+
+        //sets up a new timer
+        timeoutId = setTimeout(() => {
+            fn.apply(null, args);
+        }, delay)
+    };
+};
+
+formEl.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    //Validate Fields
+    let isUsernameValid = checkUsername(),
+        isEmailValid = checkEmail(),
+        isPasswordValid = checkPassword(),
+        isConfirmPasswordValid = checkConfirmPassword();
+
+    let isFormValid = isUsernameValid && isEmailValid && isPasswordValid && isConfirmPasswordValid;
+
+    //Submits to the Servr if Valid
+    if(isFormValid) {
+
+    }
+})
+
+
+formEl.addEventListener('input', function(e) {
+    switch (e.target.id) {
+        case 'username':
+            checkUsername();
+            break;
+        case 'email':
+            checkEmail();
+            break;
+        case 'password':
+            checkPassword();
+            break;
+        case 'confirm-password':
+            checkConfirmPassword();
+            break;
+        case 'username':
+            checkUsername();
+            break;
+        default:
+            break;
+    }
+})

@@ -10,6 +10,7 @@
     width: 100%;
     min-height: 100vh;
     justify-content: center;
+    background-color: #fc0;
  }
 
 .container {
@@ -20,7 +21,7 @@
 
 .form {
     width: 100%;
-    background:rgba(0, 0, 0, .2);
+    background:rgba(0, 0, 0, .15);
     padding: 20px;
     border-radius: 8px;
 
@@ -74,10 +75,23 @@ small {
 
 .form .form-field #submit {
     background: blue;
+    color: #fff;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     border: none;
     padding: 12px 15px;
     border-radius: 0;
     cursor: pointer;
     border-radius: 2px;
+    transform: letter-spacing 2s ease;
 }
+
+.form .form-field #submit:hover {
+    letter-spacing: 4px;
+    transform: scale(1.02);
+
+}
+
 
